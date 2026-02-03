@@ -1,0 +1,17 @@
+services:
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    volumes:
+      - db-data:/app/data
+    environment:
+      - DATABASE_URL=file:/app/data/solomon.db
+      - JWT_SECRET=${JWT_SECRET:-change-me-to-a-random-secret}
+      - RP_ID=${RP_ID:-localhost}
+      - RP_NAME=${RP_NAME:-Solomon}
+      - RP_ORIGIN=${RP_ORIGIN:-http://localhost:3000}
+      - PORT=3000
+
+volumes:
+  db-data:
