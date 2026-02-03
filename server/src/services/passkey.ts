@@ -13,7 +13,7 @@ import { prisma } from "../prisma.js";
 
 const rpID = process.env.RP_ID || "localhost";
 const rpName = process.env.RP_NAME || "Solomon";
-const rpOrigin = process.env.RP_ORIGIN || "http://localhost:3000";
+const rpOrigin = process.env.RP_ORIGIN || "";
 
 // In-memory challenge store (per-user, short-lived)
 const challengeStore = new Map<string, string>();
@@ -57,6 +57,7 @@ export async function verifyRegistration(
     expectedChallenge,
     expectedOrigin: rpOrigin,
     expectedRPID: rpID,
+    requireUserVerification: false,
   });
 
   if (!verification.verified || !verification.registrationInfo) {
