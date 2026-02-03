@@ -6,7 +6,7 @@ import {
   verifyLogin,
 } from "../services/passkey.js";
 import { signToken, requireAuth } from "../middleware/auth.js";
-import { prisma } from "../index.js";
+import { prisma } from "../prisma.js";
 
 const router = Router();
 

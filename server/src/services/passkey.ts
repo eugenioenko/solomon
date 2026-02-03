@@ -9,7 +9,7 @@ import type {
   AuthenticationResponseJSON,
   AuthenticatorTransportFuture,
 } from "@simplewebauthn/types";
-import { prisma } from "../index.js";
+import { prisma } from "../prisma.js";
 
 const rpID = process.env.RP_ID || "localhost";
 const rpName = process.env.RP_NAME || "Solomon";
