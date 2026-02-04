@@ -167,6 +167,7 @@ export function LevelPlayer() {
               onRestart={handleRestart}
               onFork={handleFork}
               forking={forking}
+              gameRef={gameRef}
             />
           )}
         </div>

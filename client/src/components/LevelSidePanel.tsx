@@ -1,4 +1,4 @@
-import { type ReactNode } from "react";
+import { type ReactNode, useState, useCallback, type MutableRefObject } from "react";
 import { Link } from "react-router-dom";
 import {
   Info,
@@ -13,6 +13,9 @@ import {
   Calendar,
   LogIn,
   Medal,
+  Volume2,
+  VolumeX,
+  Music,
   type LucideIcon,
 } from "lucide-react";
 
@@ -40,6 +43,7 @@ interface LevelSidePanelProps {
   onRestart: () => void;
   onFork: () => void;
   forking: boolean;
+  gameRef: MutableRefObject<any>;
 }
 
 function formatDate(dateString: string): string {
@@ -213,6 +217,58 @@ function ActionsSection({
   );
 }
 
+function AudioSection({ gameRef }: { gameRef: MutableRefObject<any> }) {
+  const getSound = () => gameRef.current?.engine?.sound;
+
+  const [musicOn, setMusicOn] = useState(() => getSound()?.musicOn ?? true);
+  const [soundOn, setSoundOn] = useState(() => getSound()?.soundOn ?? true);
+
+  const handleToggleMusic = useCallback(() => {
+    const sound = getSound();
+    if (sound) {
+      const next = sound.toggleMusic();
+      setMusicOn(next);
+    }
+  }, []);
+
+  const handleToggleSound = useCallback(() => {
+    const sound = getSound();
+    if (sound) {
+      const next = sound.toggleSound();
+      setSoundOn(next);
+    }
+  }, []);
+
+  return (
+    <SideSection icon={Volume2} title="Audio">
+      <div className="flex gap-2">
+        <button
+          onClick={handleToggleMusic}
+          className={`flex-1 flex items-center justify-center gap-1.5 rounded-md px-3 py-2 text-[13px] cursor-pointer transition-all duration-150 border ${
+            musicOn
+              ? "bg-white/[0.08] border-white/10 text-[#ccc] hover:bg-white/[0.12] hover:text-white"
+              : "bg-black/30 border-white/5 text-[#666] hover:bg-white/[0.06] hover:text-[#888]"
+          }`}
+        >
+          <Music size={14} />
+          Music {musicOn ? "ON" : "OFF"}
+        </button>
+        <button
+          onClick={handleToggleSound}
+          className={`flex-1 flex items-center justify-center gap-1.5 rounded-md px-3 py-2 text-[13px] cursor-pointer transition-all duration-150 border ${
+            soundOn
+              ? "bg-white/[0.08] border-white/10 text-[#ccc] hover:bg-white/[0.12] hover:text-white"
+              : "bg-black/30 border-white/5 text-[#666] hover:bg-white/[0.06] hover:text-[#888]"
+          }`}
+        >
+          {soundOn ? <Volume2 size={14} /> : <VolumeX size={14} />}
+          SFX {soundOn ? "ON" : "OFF"}
+        </button>
+      </div>
+    </SideSection>
+  );
+}
+
 function ControlsSection() {
   return (
     <SideSection icon={Keyboard} title="Controls">
@@ -276,6 +332,7 @@ export function LevelSidePanel({
   onRestart,
   onFork,
   forking,
+  gameRef,
 }: LevelSidePanelProps) {
   return (
     <aside className="w-[260px] lg:w-[350px] bg-black/30 border-l border-white/10 flex flex-col overflow-y-auto max-[900px]:w-full max-[900px]:border-l-0 max-[900px]:border-t max-[900px]:border-white/10">
@@ -290,6 +347,7 @@ export function LevelSidePanel({
         onFork={onFork}
         forking={forking}
       />
+      <AudioSection gameRef={gameRef} />
       <ControlsSection />
       {level.completions && level.completions.length > 0 && (
         <ScoreboardSection completions={level.completions} />
