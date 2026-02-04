@@ -247,9 +247,8 @@ export function LevelEditor() {
 
         switch (tool) {
           case 3:
-            engine.addSprite(
-              new FireNIce.Ice(engine, tx, ty, 1, new FireNIce.Frost(true, true))
-            );
+            engine.removeIceBlock(tx, ty);
+            engine.addIceBlock(tx, ty);
             break;
           case 4:
             engine.addSprite(new FireNIce.Metal(engine, tx, ty, 1));
