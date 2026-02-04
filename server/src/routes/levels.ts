@@ -39,6 +39,60 @@ router.get("/", async (_req: Request, res: Response) => {
   }
 });
 
+// Get next published level in desc order (public)
+router.get("/next", async (req: Request, res: Response) => {
+  try {
+    const afterId = req.query.after as string | undefined;
+
+    let next = null;
+
+    if (afterId) {
+      const current = await prisma.level.findUnique({
+        where: { id: afterId },
+        select: { createdAt: true },
+      });
+
+      if (current) {
+        next = await prisma.level.findFirst({
+          where: { published: true, createdAt: { lt: current.createdAt } },
+          orderBy: { createdAt: "desc" },
+          select: { id: true },
+        });
+      }
+    }
+
+    // Wrap around to the newest published level
+    if (!next) {
+      next = await prisma.level.findFirst({
+        where: {
+          published: true,
+          ...(afterId ? { id: { not: afterId } } : {}),
+        },
+        orderBy: { createdAt: "desc" },
+        select: { id: true },
+      });
+    }
+
+    // Fall back to a random published level
+    if (!next && afterId) {
+      const count = await prisma.level.count({
+        where: { published: true, id: { not: afterId } },
+      });
+      if (count > 0) {
+        next = await prisma.level.findFirst({
+          where: { published: true, id: { not: afterId } },
+          skip: Math.floor(Math.random() * count),
+          select: { id: true },
+        });
+      }
+    }
+
+    res.json(next);
+  } catch (err: any) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // Get single level
 router.get("/:id", async (req: Request, res: Response) => {
   try {
@@ -48,6 +102,14 @@ router.get("/:id", async (req: Request, res: Response) => {
       include: {
         createdBy: { select: { id: true, username: true } },
         _count: { select: { completions: true } },
+        completions: {
+          select: {
+            user: { select: { username: true } },
+            completedAt: true,
+          },
+          orderBy: { completedAt: "desc" },
+          take: 10,
+        },
       },
     });
 
@@ -59,6 +121,10 @@ router.get("/:id", async (req: Request, res: Response) => {
     res.json({
       ...level,
       completionCount: level._count.completions,
+      completions: level.completions.map((c) => ({
+        username: c.user.username,
+        completedAt: c.completedAt,
+      })),
       _count: undefined,
     });
   } catch (err: any) {

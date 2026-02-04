@@ -72,7 +72,7 @@ export function Login() {
         <p className="text-center text-surface-400 text-xs mb-6" >
           Play, Create and Share!
         </p>
-        <div className="space-y-4">
+        <div className="space-y-8">
           <div>
             <label htmlFor="username" className="block text-sm text-surface-300 mb-1">
               Username
@@ -82,10 +82,10 @@ export function Login() {
               type="text"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && handleLogin()}
+              onKeyDown={(e) => e.key === "Enter" && !loading && handleLogin()}
               className="w-full px-3 py-2 bg-surface-700 border border-surface-600 rounded text-white placeholder-surface-500 focus:outline-none focus:border-primary-500"
               placeholder="Enter your username"
-              disabled={loading}
+              autoComplete="username"
             />
           </div>
 
@@ -97,21 +97,21 @@ export function Login() {
             <button
               onClick={handleLogin}
               disabled={loading}
-              className="flex-1 bg-primary-600 hover:bg-primary-700 disabled:opacity-50 text-white py-2 rounded font-medium"
+              className="flex-1 bg-primary-600 hover:bg-primary-700 disabled:opacity-50 text-white py-2 rounded font-medium cursor-pointer"
             >
               {loading ? "..." : "Login"}
             </button>
             <button
               onClick={handleRegister}
               disabled={loading}
-              className="flex-1 bg-surface-600 hover:bg-surface-500 disabled:opacity-50 text-white py-2 rounded font-medium"
+              className="flex-1 bg-secondary-600 hover:bg-secondary-700 disabled:opacity-50 text-white py-2 rounded font-medium cursor-pointer"
             >
               {loading ? "..." : "Sign Up"}
             </button>
           </div>
 
           <p className="text-xs text-surface-500 text-center">
-            Authentication uses passkeys. Your browser will prompt you to verify your identity.
+            Authentication uses passkeys. Your credentials are stored securely and never leave your device
           </p>
         </div>
       </div>

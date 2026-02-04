@@ -1,6 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
-import { Home, LayoutDashboard, Info, LogIn, LogOut, User, Flame, Snowflake } from "lucide-react";
+import { Home, LayoutDashboard, Info, LogIn, LogOut, User, Flame, Snowflake, Plus } from "lucide-react";
 
 export function Navbar() {
   const { user, logout } = useAuth();
@@ -46,6 +46,10 @@ export function Navbar() {
               Dashboard
             </Link>
           )}
+          <Link to="/editor" className={linkClass("/editor")}>
+            <Plus size={16} />
+            Create
+          </Link>
           <Link to="/about" className={linkClass("/about")}>
             <Info size={16} />
             About

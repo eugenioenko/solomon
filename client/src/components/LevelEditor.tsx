@@ -361,6 +361,8 @@ export function LevelEditor() {
     return () => {
       mounted = false;
       clearInterval(interval);
+      gameRef.current?.destroy();
+      gameRef.current = null;
     };
   }, [id, placeTile, showToast]);
 
@@ -400,18 +402,17 @@ export function LevelEditor() {
       {/* Header */}
       <header className="bg-black/40 border-b border-white/10 px-5 py-3 flex items-center justify-between backdrop-blur-sm">
         <div className="flex items-center gap-3">
-          <h1 className="m-0 text-xl font-semibold bg-gradient-to-r from-[#00d4ff] to-[#ff6b9d] bg-clip-text text-transparent">
+          <h1 className="m-0 text-lg font-semibold bg-gradient-to-r from-[#00d4ff] to-[#ff6b9d] bg-clip-text text-transparent">
             Fire 'n Ice Level Editor
           </h1>
           <span className="bg-[rgba(255,107,157,0.2)] text-[#ff6b9d] text-[10px] px-2 py-0.5 rounded-[10px] font-semibold uppercase tracking-wide">
             Beta
           </span>
           {id && (
-            <span className={`text-[10px] px-2 py-0.5 rounded-[10px] font-semibold uppercase tracking-wide ${
-              published
-                ? "bg-[rgba(76,175,80,0.2)] text-[#4caf50]"
-                : "bg-[rgba(255,255,255,0.08)] text-[#888]"
-            }`}>
+            <span className={`text-[10px] px-2 py-0.5 rounded-[10px] font-semibold uppercase tracking-wide ${published
+              ? "bg-[rgba(76,175,80,0.2)] text-[#4caf50]"
+              : "bg-[rgba(255,255,255,0.08)] text-[#888]"
+              }`}>
               {published ? "Published" : "Draft"}
             </span>
           )}
@@ -430,13 +431,13 @@ export function LevelEditor() {
             className="bg-[rgba(0,212,255,0.2)] border border-[rgba(0,212,255,0.3)] rounded-md text-[#00d4ff] px-3.5 py-2 text-[13px] cursor-pointer transition-all duration-150 flex items-center gap-1.5 hover:bg-[rgba(0,212,255,0.3)] disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {saving ? <Loader2 size={14} className="animate-spin" /> : <Save size={14} />}
-            {saving ? "Saving..." : id ? "Save" : "Create"}
+            {saving ? "Saving..." : id ? "Save" : "Save New"}
           </button>
           {id && !published && (
             <button
               onClick={publishLevel}
               disabled={publishing}
-              className="bg-[rgba(76,175,80,0.2)] border border-[rgba(76,175,80,0.3)] rounded-md text-[#4caf50] px-3.5 py-2 text-[13px] cursor-pointer transition-all duration-150 flex items-center gap-1.5 hover:bg-[rgba(76,175,80,0.3)] disabled:opacity-50 disabled:cursor-not-allowed"
+              className="bg-[rgba(255,179,0,0.2)] border border-[rgba(255,179,0,0.3)] rounded-md text-[#ffb300] px-3.5 py-2 text-[13px] cursor-pointer transition-all duration-150 flex items-center gap-1.5 hover:bg-[rgba(255,179,0,0.3)] disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {publishing ? <Loader2 size={14} className="animate-spin" /> : <Globe size={14} />}
               {publishing ? "Publishing..." : "Publish"}
@@ -530,25 +531,27 @@ export function LevelEditor() {
           </div>
 
           {/* Load Level */}
-          <div className="p-4 border-b border-white/5 max-[900px]:flex-1 max-[900px]:min-w-[200px] max-[900px]:border-b-0 max-[900px]:border-r max-[900px]:border-white/5">
-            <div className="text-[11px] font-semibold uppercase tracking-[1px] text-[#888] mb-3 flex items-center gap-1.5">
-              <FolderOpen size={12} />
-              Load Template
+          {!id && (
+            <div className="p-4 border-b border-white/5 max-[900px]:flex-1 max-[900px]:min-w-[200px] max-[900px]:border-b-0 max-[900px]:border-r max-[900px]:border-white/5">
+              <div className="text-[11px] font-semibold uppercase tracking-[1px] text-[#888] mb-3 flex items-center gap-1.5">
+                <FolderOpen size={12} />
+                Load Template
+              </div>
+              <select
+                onChange={(e) => loadLevel(parseInt(e.target.value))}
+                onBlur={(e) => (e.target as HTMLSelectElement).blur()}
+                className="w-full bg-black/30 border border-white/10 rounded-md text-[#e4e4e4] px-3 py-2.5 text-[13px] cursor-pointer transition-all duration-150 hover:border-white/20 focus:outline-none focus:border-[#00d4ff]"
+                defaultValue="-1"
+              >
+                <option value="-1">Blank</option>
+                {Array.from({ length: levelCount }, (_, i) => (
+                  <option key={i} value={i}>
+                    Template {i + 1}
+                  </option>
+                ))}
+              </select>
             </div>
-            <select
-              onChange={(e) => loadLevel(parseInt(e.target.value))}
-              onBlur={(e) => (e.target as HTMLSelectElement).blur()}
-              className="w-full bg-black/30 border border-white/10 rounded-md text-[#e4e4e4] px-3 py-2.5 text-[13px] cursor-pointer transition-all duration-150 hover:border-white/20 focus:outline-none focus:border-[#00d4ff]"
-              defaultValue="-1"
-            >
-              <option value="-1">Blank</option>
-              {Array.from({ length: levelCount }, (_, i) => (
-                <option key={i} value={i}>
-                  Template {i + 1}
-                </option>
-              ))}
-            </select>
-          </div>
+          )}
 
           {/* Shortcuts */}
           <div className="p-4 max-[900px]:flex-1 max-[900px]:min-w-[200px]">

@@ -5,6 +5,7 @@ import { Controls } from "./Controls";
 import { Canvas } from "./Canvas";
 import { MainContainer } from "./MainContainer";
 import { LevelSidePanel } from "./LevelSidePanel";
+import { CompletionOverlay } from "./CompletionOverlay";
 import { apiFetch } from "../services/api";
 import { useAuth } from "../hooks/useAuth";
 
@@ -19,6 +20,7 @@ interface LevelDetail {
   createdAt: string;
   completionCount: number;
   version: number;
+  completions?: { username: string; completedAt: string }[];
 }
 
 export function LevelPlayer() {
@@ -30,12 +32,19 @@ export function LevelPlayer() {
   const [level, setLevel] = useState<LevelDetail | null>(null);
   const [forking, setForking] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
+  const [showOverlay, setShowOverlay] = useState(false);
   const gameRef = useRef<any>(null);
 
   const handleLevelComplete = useCallback(() => {
     setShowConfetti(true);
+    setShowOverlay(true);
     setTimeout(() => setShowConfetti(false), 5000);
   }, []);
+
+  useEffect(() => {
+    setShowOverlay(false);
+    setShowConfetti(false);
+  }, [id]);
 
   useEffect(() => {
     if (!id) {
@@ -80,7 +89,11 @@ export function LevelPlayer() {
       }
     })();
 
-    return () => { mounted = false; };
+    return () => {
+      mounted = false;
+      gameRef.current?.destroy();
+      gameRef.current = null;
+    };
   }, [id, handleLevelComplete]);
 
   const handleRestart = useCallback(() => {
@@ -136,6 +149,9 @@ export function LevelPlayer() {
                   recycle={false}
                   numberOfPieces={100}
                 />
+              )}
+              {showOverlay && id && (
+                <CompletionOverlay currentLevelId={id} />
               )}
               <Canvas />
             </div>

@@ -78,9 +78,6 @@ export function Dashboard() {
                     <span className="text-secondary-400">Draft</span>
                   )}
                   <span>{level.completionCount} cleared</span>
-                  {level.locked && (
-                    <span className="text-danger-400">Locked</span>
-                  )}
                 </div>
               </div>
               <div className="flex items-center gap-2">
