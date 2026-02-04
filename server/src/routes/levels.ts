@@ -197,6 +197,37 @@ router.post("/:id/publish", requireAuth, async (req: Request, res: Response) => 
   }
 });
 
+// Fork/clone level
+router.post("/:id/fork", requireAuth, async (req: Request, res: Response) => {
+  try {
+    const id = paramId(req);
+    const source = await prisma.level.findUnique({ where: { id } });
+
+    if (!source) {
+      res.status(404).json({ error: "Level not found" });
+      return;
+    }
+    if (!source.published) {
+      res.status(400).json({ error: "Can only fork published levels" });
+      return;
+    }
+
+    const forked = await prisma.level.create({
+      data: {
+        title: `Copy of ${source.title}`,
+        description: source.description,
+        data: source.data,
+        screenshot: source.screenshot,
+        createdById: req.user!.userId,
+      },
+    });
+
+    res.status(201).json(forked);
+  } catch (err: any) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // Complete level
 router.post("/:id/complete", requireAuth, async (req: Request, res: Response) => {
   try {

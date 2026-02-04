@@ -2,13 +2,13 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
 import { Layout } from "./components/Layout";
 import { ProtectedRoute } from "./components/ProtectedRoute";
-import { Home } from "./pages/Home";
-import { Login } from "./pages/Login";
-import { Dashboard } from "./pages/Dashboard";
-import { About } from "./pages/About";
-import { Terms } from "./pages/Terms";
-import { LevelEditor } from "./pages/LevelEditor";
-import { LevelPlayer } from "./pages/LevelPlayer";
+import { Home } from "./components/Home";
+import { Login } from "./components/Login";
+import { Dashboard } from "./components/Dashboard";
+import { About } from "./components/About";
+import { Terms } from "./components/Terms";
+import { LevelEditor } from "./components/LevelEditor";
+import { LevelPlayer } from "./components/LevelPlayer";
 
 export default function App() {
   return (

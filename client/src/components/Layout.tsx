@@ -1,13 +1,12 @@
+
 import { Outlet } from "react-router-dom";
 import { Navbar } from "./Navbar";
 
 export function Layout() {
   return (
-    <div className="min-h-screen bg-surface-900 text-white">
+    <div className="min-h-[100dvh]  bg-gradient-to-br from-[#1a1a2e] via-[#16213e] to-[#0d1320] text-white">
       <Navbar />
-      <main className="max-w-6xl mx-auto px-4 py-8">
-        <Outlet />
-      </main>
+      <Outlet />
     </div>
   );
 }

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { apiFetch } from "../services/api";
+import { MainContainer } from "./MainContainer";
 
 interface UserLevel {
   id: string;
@@ -18,7 +19,7 @@ export function Dashboard() {
   useEffect(() => {
     apiFetch<UserLevel[]>("/users/me/levels")
       .then(setLevels)
-      .catch(() => {})
+      .catch(() => { })
       .finally(() => setLoading(false));
   }, []);
 
@@ -44,7 +45,7 @@ export function Dashboard() {
   }
 
   return (
-    <div>
+    <MainContainer>
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-3xl font-bold">My Levels</h1>
         <Link
@@ -112,6 +113,6 @@ export function Dashboard() {
           ))}
         </div>
       )}
-    </div>
+    </MainContainer>
   );
 }

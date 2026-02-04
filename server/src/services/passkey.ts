@@ -142,6 +142,7 @@ export async function verifyLogin(
     expectedChallenge,
     expectedOrigin: rpOrigin,
     expectedRPID: rpID,
+    requireUserVerification: false,
     credential: {
       id: credential.credentialId,
       publicKey: credential.publicKey,

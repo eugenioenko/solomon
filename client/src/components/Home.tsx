@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { apiFetch } from "../services/api";
-import { LevelCard } from "../components/LevelCard";
+import { LevelCard } from "./LevelCard";
+import { MainContainer } from "./MainContainer";
 
 interface Level {
   id: string;
@@ -17,12 +18,12 @@ export function Home() {
   useEffect(() => {
     apiFetch<Level[]>("/levels")
       .then(setLevels)
-      .catch(() => {})
+      .catch(() => { })
       .finally(() => setLoading(false));
   }, []);
 
   return (
-    <div>
+    <MainContainer>
       <h1 className="text-3xl font-bold mb-2">Community Levels</h1>
       <p className="text-surface-400 mb-6">
         Play levels created by the community
@@ -41,6 +42,6 @@ export function Home() {
           ))}
         </div>
       )}
-    </div>
+    </MainContainer>
   );
 }

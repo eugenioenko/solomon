@@ -48,8 +48,30 @@ export function Login() {
 
   return (
     <div className="flex items-center justify-center min-h-[70vh]">
-      <div className="w-full max-w-sm bg-surface-800 rounded-lg p-6 border border-surface-700">
-        <h1 className="text-2xl font-bold text-center mb-6">Welcome to Solomon</h1>
+      <div className="w-full max-w-sm bg-surface-800 rounded-lg p-8 border border-surface-700 relative overflow-hidden">
+        {/* Retro corner accents */}
+        <div className="absolute top-2 left-2 w-4 h-4 border-t-2 border-l-2 border-[var(--color-ice)] opacity-30" />
+        <div className="absolute top-2 right-2 w-4 h-4 border-t-2 border-r-2 border-[var(--color-fire)] opacity-30" />
+        <div className="absolute bottom-2 left-2 w-4 h-4 border-b-2 border-l-2 border-[var(--color-fire)] opacity-30" />
+        <div className="absolute bottom-2 right-2 w-4 h-4 border-b-2 border-r-2 border-[var(--color-ice)] opacity-30" />
+
+        <h1
+          className="text-center mb-4"
+          style={{
+            fontFamily: "var(--font-pixel)",
+            fontSize: "clamp(18px, 4vw, 24px)",
+            color: "#fff",
+            textShadow:
+              "0 0 10px var(--color-ice), 0 0 20px var(--color-ice), 3px 3px 0 var(--color-fire)",
+            letterSpacing: "2px",
+            animation: "logo-glow 2s ease-in-out infinite alternate",
+          }}
+        >
+          Fire'n Ice
+        </h1>
+        <p className="text-center text-surface-400 text-xs mb-6" >
+          Play, Create and Share!
+        </p>
         <div className="space-y-4">
           <div>
             <label htmlFor="username" className="block text-sm text-surface-300 mb-1">
