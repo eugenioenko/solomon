@@ -9,7 +9,7 @@ interface CompletionOverlayProps {
 
 export function CompletionOverlay({ currentLevelId }: CompletionOverlayProps) {
   const navigate = useNavigate();
-  const [countdown, setCountdown] = useState(5);
+  const [countdown, setCountdown] = useState(3);
   const [nextLevelId, setNextLevelId] = useState<string | null>(null);
   const [loaded, setLoaded] = useState(false);
 

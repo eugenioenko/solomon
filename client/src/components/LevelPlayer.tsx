@@ -1,6 +1,5 @@
 import { useEffect, useState, useRef, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import Confetti from "react-confetti";
 import { Controls } from "./Controls";
 import { Canvas } from "./Canvas";
 import { MainContainer } from "./MainContainer";
@@ -31,19 +30,16 @@ export function LevelPlayer() {
   const [loading, setLoading] = useState(true);
   const [level, setLevel] = useState<LevelDetail | null>(null);
   const [forking, setForking] = useState(false);
-  const [showConfetti, setShowConfetti] = useState(false);
   const [showOverlay, setShowOverlay] = useState(false);
   const gameRef = useRef<any>(null);
 
   const handleLevelComplete = useCallback(() => {
-    setShowConfetti(true);
     setShowOverlay(true);
-    setTimeout(() => setShowConfetti(false), 5000);
   }, []);
 
   useEffect(() => {
     setShowOverlay(false);
-    setShowConfetti(false);
+    window.scrollTo(0, 0);
   }, [id]);
 
   useEffect(() => {
@@ -142,14 +138,6 @@ export function LevelPlayer() {
               <div className="text-center text-[#888] py-4 text-sm">Loading level...</div>
             )}
             <div className="relative">
-              {showConfetti && (
-                <Confetti
-                  width={window.innerWidth}
-                  height={window.innerHeight}
-                  recycle={false}
-                  numberOfPieces={100}
-                />
-              )}
               {showOverlay && id && (
                 <CompletionOverlay currentLevelId={id} />
               )}

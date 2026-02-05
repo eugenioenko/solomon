@@ -707,7 +707,7 @@ canvas {
    Utility Classes
    ======================================== */
 
-.hidden {
+.game-hidden {
   display: none !important;
 }
 
