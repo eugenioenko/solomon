@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
-import { Layout } from "./components/Layout";
+import { Layout, LayoutFull } from "./components/Layout";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 import { Home } from "./components/Home";
 import { Login } from "./components/Login";
@@ -20,7 +20,7 @@ export default function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/about" element={<About />} />
             <Route path="/terms" element={<Terms />} />
-            <Route path="/play/:id" element={<LevelPlayer />} />
+
             <Route
               path="/dashboard"
               element={
@@ -29,6 +29,10 @@ export default function App() {
                 </ProtectedRoute>
               }
             />
+
+          </Route>
+          <Route element={<LayoutFull />}>
+            <Route path="/play/:id" element={<LevelPlayer />} />
             <Route
               path="/editor/:id?"
               element={

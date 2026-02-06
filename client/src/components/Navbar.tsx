@@ -27,7 +27,7 @@ export function Navbar() {
     }`;
 
   return (
-    <nav className="bg-black/20 backdrop-blur-md border-b border-surface-700/50 sticky top-0 z-50">
+    <nav className="bg-surface-900 border-b border-surface-600 sticky top-0 z-50">
       <div className="max-w-6xl mx-auto px-4 h-14 flex items-center justify-between">
         <div className="flex items-center gap-1">
           <Link
