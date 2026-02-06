@@ -244,22 +244,20 @@ function AudioSection({ gameRef }: { gameRef: MutableRefObject<any> }) {
       <div className="flex gap-2">
         <button
           onClick={handleToggleMusic}
-          className={`flex-1 flex items-center justify-center gap-1.5 rounded-md px-3 py-2 text-[13px] cursor-pointer transition-all duration-150 border ${
-            musicOn
-              ? "bg-white/[0.08] border-white/10 text-[#ccc] hover:bg-white/[0.12] hover:text-white"
-              : "bg-black/30 border-white/5 text-[#666] hover:bg-white/[0.06] hover:text-[#888]"
-          }`}
+          className={`flex-1 flex items-center justify-center gap-1.5 rounded-md px-3 py-2 text-[13px] cursor-pointer transition-all duration-150 border ${musicOn
+            ? "bg-white/[0.08] border-white/10 text-[#ccc] hover:bg-white/[0.12] hover:text-white"
+            : "bg-black/30 border-white/5 text-[#666] hover:bg-white/[0.06] hover:text-[#888]"
+            }`}
         >
           <Music size={14} />
           Music {musicOn ? "ON" : "OFF"}
         </button>
         <button
           onClick={handleToggleSound}
-          className={`flex-1 flex items-center justify-center gap-1.5 rounded-md px-3 py-2 text-[13px] cursor-pointer transition-all duration-150 border ${
-            soundOn
-              ? "bg-white/[0.08] border-white/10 text-[#ccc] hover:bg-white/[0.12] hover:text-white"
-              : "bg-black/30 border-white/5 text-[#666] hover:bg-white/[0.06] hover:text-[#888]"
-          }`}
+          className={`flex-1 flex items-center justify-center gap-1.5 rounded-md px-3 py-2 text-[13px] cursor-pointer transition-all duration-150 border ${soundOn
+            ? "bg-white/[0.08] border-white/10 text-[#ccc] hover:bg-white/[0.12] hover:text-white"
+            : "bg-black/30 border-white/5 text-[#666] hover:bg-white/[0.06] hover:text-[#888]"
+            }`}
         >
           {soundOn ? <Volume2 size={14} /> : <VolumeX size={14} />}
           SFX {soundOn ? "ON" : "OFF"}
@@ -300,7 +298,7 @@ function ControlsSection() {
 function ScoreboardSection({ completions }: { completions: LevelCompletion[] }) {
   return (
     <SideSection icon={Medal} title="Scoreboard" border={false}>
-      <div className="max-h-[160px] overflow-y-auto flex flex-col gap-1">
+      <div className="max-h-[160px] lg:overflow-y-auto flex flex-col gap-1">
         {completions.map((c, i) => (
           <div
             key={c.username}
@@ -335,7 +333,7 @@ export function LevelSidePanel({
   gameRef,
 }: LevelSidePanelProps) {
   return (
-    <aside className="w-[260px] lg:w-[350px] bg-black/30 border-l border-white/10 flex flex-col overflow-y-auto max-[900px]:w-full max-[900px]:border-l-0 max-[900px]:border-t max-[900px]:border-white/10">
+    <aside className="w-full lg:w-[350px] bg-black/30 border-l border-white/10 flex flex-col overflow-y-auto max-[900px]:w-full max-[900px]:border-l-0 max-[900px]:border-t max-[900px]:border-white/10">
       <BackLink />
       <LevelInfoSection level={level} />
       <StatisticsSection level={level} />

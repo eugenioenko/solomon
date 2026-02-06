@@ -85,7 +85,7 @@ html {
 body {
   margin: 0;
   padding: 0;
-  min-height: 100vh;
+  height: 100%;
   background: var(--color-bg);
   background-image:
     radial-gradient(ellipse at top, rgba(0, 212, 255, 0.1) 0%, transparent 50%),
@@ -395,16 +395,7 @@ canvas {
    Mobile Controls - D-Pad Style
    ======================================== */
 
-.mobile-controls {
-  display: none;
-  padding: 15px;
-  gap: 20px;
-  justify-content: space-between;
-  align-items: center;
-  max-width: 720px;
-  margin: 0 auto;
-  touch-action: manipulation;
-}
+
 
 /* D-Pad */
 .dpad-container {
@@ -557,7 +548,6 @@ canvas {
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 12px;
   padding: 16px;
-  backdrop-filter: blur(10px);
   max-width: 672px;
   margin-top: 32px;
 }

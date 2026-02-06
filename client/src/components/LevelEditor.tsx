@@ -80,6 +80,7 @@ export function LevelEditor() {
   const mouseDownRef = useRef(false);
   const activeToolRef = useRef(activeTool);
   const activeThemeRef = useRef(activeTheme);
+  const teleportRefCounter = useRef(1);
 
   // Keep refs in sync with state
   useEffect(() => { activeToolRef.current = activeTool; }, [activeTool]);
@@ -233,6 +234,14 @@ export function LevelEditor() {
       const tool = activeToolRef.current;
 
       if (tool === 0) {
+        // Unlink partner if erasing a teleport
+        const erased = engine.sprites.find(
+          (s: any) => s.xTile === tx && s.yTile === ty
+        );
+        if (erased?.id === 8 && erased.link) {
+          erased.link.link = null;
+          erased.link.linkId = null;
+        }
         engine.map.map[ty][tx] = 0;
         engine.sprites = engine.sprites.filter(
           (s: any) => !(s.xTile === tx && s.yTile === ty)
@@ -240,6 +249,14 @@ export function LevelEditor() {
       } else if (tool === 1) {
         engine.map.map[ty][tx] = 1;
       } else {
+        // Unlink partner if replacing a teleport
+        const replaced = engine.sprites.find(
+          (s: any) => s.xTile === tx && s.yTile === ty
+        );
+        if (replaced?.id === 8 && replaced.link) {
+          replaced.link.link = null;
+          replaced.link.linkId = null;
+        }
         engine.sprites = engine.sprites.filter(
           (s: any) => !(s.xTile === tx && s.yTile === ty)
         );
@@ -264,9 +281,22 @@ export function LevelEditor() {
             engine.player = new FireNIce.Player(engine, tx, ty);
             engine.addSprite(engine.player);
             break;
-          case 8:
-            engine.addSprite(new FireNIce.Teleport(engine, tx, ty));
+          case 8: {
+            const teleport = new FireNIce.Teleport(engine, tx, ty);
+            teleport.refId = teleportRefCounter.current++;
+            // Find an unpaired teleport to link with
+            const unpaired = engine.sprites.find(
+              (s: any) => s.id === 8 && !s.link
+            );
+            if (unpaired) {
+              teleport.linkId = unpaired.refId;
+              teleport.link = unpaired;
+              unpaired.linkId = teleport.refId;
+              unpaired.link = teleport;
+            }
+            engine.addSprite(teleport);
             break;
+          }
         }
       }
     },
@@ -302,6 +332,18 @@ export function LevelEditor() {
         ...(levelData ? { level: levelData } : {}),
       });
       gameRef.current = game;
+
+      // Initialize teleport ref counter from existing sprites
+      const engine = game.engine;
+      if (engine?.sprites) {
+        let maxRef = 0;
+        for (const s of engine.sprites) {
+          if (s.id === 8 && s.refId > maxRef) {
+            maxRef = s.refId;
+          }
+        }
+        teleportRefCounter.current = maxRef + 1;
+      }
 
       // Canvas mouse handlers for tile placement
       const handleMouseDown = (e: MouseEvent) => {
@@ -397,7 +439,7 @@ export function LevelEditor() {
   const levelCount = gameRef.current?.levels?.length ?? 0;
 
   return <MainContainer fullWidth={true}>
-    <div className="flex flex-col h-screen bg-gradient-to-br from-[#1a1a2e] via-[#16213e] to-[#0f3460] text-[#e4e4e4]">
+    <div className="flex flex-col flex-grow bg-gradient-to-br from-[#1a1a2e] via-[#16213e] to-[#0f3460] text-[#e4e4e4]">
       {/* Header */}
       <header className="bg-black/40 border-b border-white/10 px-5 py-3 flex items-center justify-between backdrop-blur-sm">
         <div className="flex items-center gap-3">

@@ -1,7 +1,7 @@
 export function Controls({ hideDesktopInfo = false }: { hideDesktopInfo?: boolean }) {
   return (
     <>
-      <div className="mobile-controls mobile-only">
+      <div className="sm:hidden p-4 flex justify-between w-full touch-manipulation">
         <div className="dpad-container">
           <div className="dpad">
             <button className="dpad-btn dpad-up" id="btn_up" aria-label="Move Up">

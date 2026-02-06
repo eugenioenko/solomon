@@ -114,52 +114,48 @@ export function LevelPlayer() {
 
   if (error) {
     return (
-      <MainContainer>
-        <div className="flex flex-col items-center justify-center py-20 text-surface-300">
-          <p className="text-lg mb-4">{error}</p>
-          <button
-            onClick={() => navigate("/")}
-            className="text-sm bg-primary-600 hover:bg-primary-500 text-white px-4 py-2 rounded-md transition-colors cursor-pointer"
-          >
-            Back to Home
-          </button>
-        </div>
+      <MainContainer className="flex  flex-col items-center justify-center">
+        <p className="text-lg mb-4">{error}</p>
+        <button
+          onClick={() => navigate("/")}
+          className="text-sm bg-primary-600 hover:bg-primary-500 text-white px-4 py-2 rounded-md transition-colors cursor-pointer"
+        >
+          Back to Home
+        </button>
       </MainContainer>
     );
   }
 
-  return (
-    <MainContainer fullWidth={true}>
-      <div className="flex flex-col min-h-[calc(100vh-3.5rem)] bg-gradient-to-br from-[#1a1a2e] via-[#16213e] to-[#0f3460] text-[#e4e4e4]">
-        <div className="flex flex-1 overflow-hidden max-[900px]:flex-col">
-          {/* Main Content */}
-          <main className="flex-1 flex flex-col items-center justify-center p-5 overflow-auto">
-            {loading && (
-              <div className="text-center text-[#888] py-4 text-sm">Loading level...</div>
-            )}
-            <div className="relative">
-              {showOverlay && id && (
-                <CompletionOverlay currentLevelId={id} />
-              )}
-              <Canvas />
-            </div>
-            <Controls hideDesktopInfo={true} />
-          </main>
 
-          {/* Side Panel */}
-          {level && (
-            <LevelSidePanel
-              level={level}
-              isOwner={isOwner}
-              isLoggedIn={!!user}
-              onRestart={handleRestart}
-              onFork={handleFork}
-              forking={forking}
-              gameRef={gameRef}
-            />
+
+  return (
+    <div className="flex flex-col lg:flex-row flex-grow h-full bg-gradient-to-br from-[#1a1a2e] via-[#16213e] to-[#0f3460] text-[#e4e4e4] overflow-hidden">
+      <main className="flex flex-col flex-grow items-center justify-center p-4 lg:p-8 lg:overflow-auto">
+        <div className="relative">
+          {showOverlay && id && (
+            <CompletionOverlay currentLevelId={id} />
           )}
+          {loading && (
+            <div className="text-center text-[#888] py-4 text-sm">Loading level...</div>
+          )}
+          <Canvas />
         </div>
-      </div>
-    </MainContainer>
+        <Controls hideDesktopInfo={true} />
+      </main>
+      {
+        level && (
+          <LevelSidePanel
+            level={level}
+            isOwner={isOwner}
+            isLoggedIn={!!user}
+            onRestart={handleRestart}
+            onFork={handleFork}
+            forking={forking}
+            gameRef={gameRef}
+          />
+        )
+      }
+
+    </div >
   );
 }
