@@ -2,6 +2,8 @@
 
 A full-stack web platform for creating, sharing, and playing puzzle games. Users can design their own levels, publish them to the community, and play puzzles created by others.
 
+> [Try it live!](https://firenice.top)
+
 ## Features
 
 - **User Authentication**: Secure passwordless authentication using WebAuthn passkeys
